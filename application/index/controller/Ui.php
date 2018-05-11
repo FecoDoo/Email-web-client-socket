@@ -7,13 +7,6 @@ use app\index\controller\Mail;
 
 class ui extends Controller
 {
-	// protected function initialize(){
-	// 	$res = new Mail();
-	// 	$res->receive();
-	// 	Db::connect();
-	// 	$number_in = Db::table('inbox')->count('title');
-	// 	Db::name('inbox_number')->where('status', 1)->update(['number_in' => $number_in]);
-	// }
 
 	public function dashboard($user = 'admin')
 	{
@@ -49,16 +42,16 @@ class ui extends Controller
 		$this->assign([
 			'title0' => $title[0],
 			'title1' => $title[1],
-			'title2' => $title[2],
-			'title3' => $title[3],
+			// 'title2' => $title[2],
+			// 'title3' => $title[3],
 			'from0' => $from[0],
 			'from1' => $from[1],
-			'from2' => $from[2],
-			'from3' => $from[3],
+			// 'from2' => $from[2],
+			// 'from3' => $from[3],
 			'date0' => $date[0],
 			'date1' => $date[1],
-			'date2' => $date[2],
-			'date3' => $date[3],
+			// 'date2' => $date[2],
+			// 'date3' => $date[3],
 		]);
 		return $this->fetch('inbox');
 	}
