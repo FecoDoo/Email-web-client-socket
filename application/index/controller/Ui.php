@@ -39,6 +39,7 @@ class ui extends Controller
 		$title = Db::name('inbox')->column('title');
 		$from = Db::name('inbox')->column('from');
 		$date = Db::name('inbox')->column('date');
+		$content = Db::name('inbox')->column('content');
 		$this->assign([
 			'title0' => $title[0],
 			'title1' => $title[1],
@@ -52,6 +53,8 @@ class ui extends Controller
 			'date1' => $date[1],
 			// 'date2' => $date[2],
 			// 'date3' => $date[3],
+			'content0' => $content[0],
+			'content1' => $content[1],
 		]);
 		return $this->fetch('inbox');
 	}

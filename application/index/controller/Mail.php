@@ -6,6 +6,11 @@ use think\Db;
 
 class Mail extends Controller
 {
+	public function sync()
+	{
+		$this->receive();
+
+	}
 	public function send()
 	{
 		Db::connect();
@@ -16,11 +21,12 @@ class Mail extends Controller
 		$smtp_host = Db::table('mailbox_info')->value('smtp_host');
 		$mailbox = Db::table('mailbox_info')->value('mailbox');
 		$passwd = Db::table('mailbox_info')->value('passwd');
-		$flag = sendMail($receiver,$title,$area,$smtp_port,$smtp_host,$mailbox,$passwd);
+		$user = Db::table('mailbox_info')->value('user');
+		$flag = sendMail($receiver,$title,$area,$smtp_port,$smtp_host,$mailbox,$passwd,$user);
 		if($flag){
 			$this->success('Successfuly sent','/dashboard');
 		}else{
-			$this->error('Sending failed','dashboard');
+			$this->error('Sending failed','/dashboard');
 		}
 	}
 
