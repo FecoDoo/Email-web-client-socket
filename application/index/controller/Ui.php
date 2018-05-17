@@ -33,29 +33,27 @@ class ui extends Controller
 	}
 	public function inbox()
 	{
-
 		Db::connect();
 		$count = Db::name('inbox')->count();
 		$title = Db::name('inbox')->column('title');
 		$from = Db::name('inbox')->column('from');
 		$date = Db::name('inbox')->column('date');
 		$content = Db::name('inbox')->column('content');
-		$this->assign([
-			'title0' => $title[0],
-			'title1' => $title[1],
-			// 'title2' => $title[2],
-			// 'title3' => $title[3],
-			'from0' => $from[0],
-			'from1' => $from[1],
-			// 'from2' => $from[2],
-			// 'from3' => $from[3],
-			'date0' => $date[0],
-			'date1' => $date[1],
-			// 'date2' => $date[2],
-			// 'date3' => $date[3],
-			'content0' => $content[0],
-			'content1' => $content[1],
-		]);
+		$list = [];
+		for($i=0;$i<$count;$i++){
+			$mail = [
+				'title' => $title[$i],
+				'from' => $from[$i],
+				'date' => $date[$i],
+				'content' => $content[$i]
+			];
+			array_push($list,$mail);
+		}
+		$this->assign('list',$list);
 		return $this->fetch('inbox');
+	}
+
+	function add(){
+		$this->ajaxReturn('1','2',0);
 	}
 }

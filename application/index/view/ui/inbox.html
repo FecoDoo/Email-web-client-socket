@@ -260,19 +260,19 @@
 				<div class="row">
 					<div class="col-md-12">
 						<h1 class="page-header">
-								Inbox <small>This is your Inbox</small>
+								Inbox
 						</h1>
-/////////////////////////////////////////////
 						<div style="margin-top: 10px;">
-						<div class="col-md-12">
 							<div class="btn-group">
-								<a href="#" class="btn btn-primary">Sync</a>
+								<form action="mail/sync" method="post" class="sync">
+									<a href = '/inbox' class="btn btn-primary">Sync</a>
+								</form>
 							</div>
-						</div>
 						</div>
 
 					</div>
 				</div>
+				<br>
 				<!-- /. ROW  -->
 				<div class="row">
 					<div class="col-md-12">
@@ -281,20 +281,15 @@
 								Inbox
 							</div>
 							<div class="panel-body">
+								{volist name='list' id='vo'}
 								<div class="alert alert-success">
-									<strong>Title: {$title0}</strong>
-									<br>From: {$from0}
-									<br>Date: {$date0}
+									<strong>Title: {$vo.title}</strong>
+									<br>From: {$vo.from}
+									<br>Date: {$vo.date}
 									<br>Content: <br>
-									<small>{$content0}</small>
+									<small>{$vo.content}</small>
 								</div>
-								<div class="alert alert-info">
-									<strong>Title: {$title1}</strong>
-									<br>From: {$from1}
-									<br>Date: {$date1}
-									<br>Content: <br>
-									<small>{$content1}</small>
-								</div>
+								{/volist}
 							</div>
 						</div>
 					</div>

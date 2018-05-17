@@ -9,7 +9,7 @@ class Mail extends Controller
 	public function sync()
 	{
 		$this->receive();
-
+		$this->success('Sync successful','/inbox');
 	}
 	public function send()
 	{
@@ -45,8 +45,6 @@ class Mail extends Controller
 			];
 			Db::name('inbox')->insertAll($data);
 		}
-
-
 	}
 }
 

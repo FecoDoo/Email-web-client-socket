@@ -88,7 +88,6 @@ function receiveMail($host,$user,$pwd,$port)
 	$list = array();
 	if( strpos($msg, 'read complete')!==FALSE ){
 		$ct = $dmail->getContent();
-		var_dump($ct);
 		$mail_list_arr = explode('+OK', $ct);
 		array_shift($mail_list_arr);// 去除第一个
 		foreach( $mail_list_arr as $v ){
@@ -105,10 +104,10 @@ function receiveMail($host,$user,$pwd,$port)
 			else{
 				$tmp_s = '邮件标题';
 			}
-			preg_match('/From:\s(.*?)\s+<(.*?)>/i', $v, $from);
+			preg_match('/From:\s"=\?(.*?)\?="\s+<(.*?)>/i', $v, $from);
 			preg_match('/Date: (.*?)\s+(From)/i', $v, $date);
 			preg_match('/Content-Transfer-Encoding:\sbase64\s+(.*?)\s+(\s)/i', $v, $content);
-			//$list[] = $tmp_s.'#'.$from[3].'#'.$date[1].'#'.$content[1];
+			$list[] = $tmp_s.'#'.$from[2].'#'.$date[1].'#'.$content[1];
 		}
 	}
 	return $list;

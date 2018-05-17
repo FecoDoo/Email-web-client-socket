@@ -9,11 +9,8 @@ return [
 
 	Route::rule('/password_check/:a','index/index/index'),
 
-	Route::rule('dashboard','index/ui/dashboard'),
-	Route::rule('inbox','index/ui/inbox'),
-	Route::rule('empty','index/ui/empty'),
-	Route::rule('send','index/ui/send'),
-
-	Route::rule('test','index/mail/receive'),
-
+	Route::rule('/dashboard','index/ui/dashboard'),
+	Route::rule('/inbox','index/ui/inbox'),
+	Route::rule('/empty','index/ui/empty'),
+	Route::rule('/send','index/ui/send'),
 ];
