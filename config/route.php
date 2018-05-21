@@ -13,4 +13,7 @@ return [
 	Route::rule('/inbox','index/ui/inbox'),
 	Route::rule('/empty','index/ui/empty'),
 	Route::rule('/send','index/ui/send'),
+
+	Route::rule('/test','index/index/test'),
+	Route::get('/info','index/index/info'),
 ];

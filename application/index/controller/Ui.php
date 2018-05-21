@@ -52,8 +52,4 @@ class ui extends Controller
 		$this->assign('list',$list);
 		return $this->fetch('inbox');
 	}
-
-	function add(){
-		$this->ajaxReturn('1','2',0);
-	}
 }

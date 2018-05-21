@@ -80,35 +80,74 @@ function sendMail($to,$title,$content,$smtp_port,$smtp_host,$mailbox,$passwd,$us
 
 function receiveMail($host,$user,$pwd,$port)
 {
-	$dmail = new Pop($host, $user, $pwd, $port);
-	$msg = $dmail->pop3();
-	$ret = $msg;
+	$mailLink="{{$host}:$port}INBOX"; //imagp连接地址：不同主机地址不同
+	$mailUser = $user; //邮箱用户名
+	$mailPass = $pwd; //邮箱密码
+	$mbox = imap_open($mailLink,$mailUser,$mailPass); //开启信箱imap_open
+	$totalrows = imap_num_msg($mbox); //取得信件数
+	for ($i=1;$i<$totalrows;$i++){
+		$headers = imap_fetchheader($mbox, $i); //获取信件标头
+		$headArr = matchMailHead($headers); //匹配信件标头
+		$mailBody = imap_fetchbody($mbox, $i, 1); //获取信件正文
+		var_dump($headList);
+		// $list[] = $tmp_s.'#'.$from[2].'#'.$date[1].'#'.$content[1];
+	}
+}
 
-	$mail_list = '';
-	$list = array();
-	if( strpos($msg, 'read complete')!==FALSE ){
-		$ct = $dmail->getContent();
-		$mail_list_arr = explode('+OK', $ct);
-		array_shift($mail_list_arr);// 去除第一个
-		foreach( $mail_list_arr as $v ){
-			// 中文标题的处理
-			if( preg_match('/Subject: (.*?)\s+(To)/i', $v, $subject) ){
-				// $tmp_s = base64_decode($subject[2]);
-				// $tmp_s = $subject[1]=='gbk'||$subject[1]=='gb2312'? iconv('gbk', 'utf-8', $tmp_s) : $tmp_s;
-				$tmp_s = $subject[1];
-			}
-			// 英文标题
-			else if(preg_match('/Subject: (.*?)\sTo/i', $v, $subject) ){
-				$tmp_s = $subject[1];
-			}
-			else{
-				$tmp_s = '邮件标题';
-			}
-			preg_match('/From:\s"=\?(.*?)\?="\s+<(.*?)>/i', $v, $from);
-			preg_match('/Date: (.*?)\s+(From)/i', $v, $date);
-			preg_match('/Content-Transfer-Encoding:\sbase64\s+(.*?)\s+(\s)/i', $v, $content);
-			$list[] = $tmp_s.'#'.$from[2].'#'.$date[1].'#'.$content[1];
+
+/**
+*
+*匹配提取信件头部信息
+*@paramString$str
+*/
+function matchMailHead($str){
+	$headList = array();
+	$headArr = array(
+		'from',
+		'to',
+		'date',
+		'subject'
+	);
+	foreach ($headArr as $key){
+		if(preg_match('/'.$key.':(.*?)[\n\r]/is', $str,$m)){
+			$match = trim($m[1]);
+			$headList[$key] = $key=='date'?date('Y-m-d H:i:s',strtotime($match)):$match;
 		}
 	}
-	return $list;
+	return $headList;
 }
+
+// function receiveMail($host,$user,$pwd,$port)
+// {
+// 	$dmail = new Pop($host, $user, $pwd, $port);
+// 	$msg = $dmail->pop3();
+// 	$ret = $msg;
+
+// 	$mail_list = '';
+// 	$list = array();
+// 	if( strpos($msg, 'read complete')!==FALSE ){
+// 		$ct = $dmail->getContent();
+// 		$mail_list_arr = explode('+OK', $ct);
+// 		array_shift($mail_list_arr);// 去除第一个
+// 		foreach( $mail_list_arr as $v ){
+// 			// 中文标题的处理
+// 			if( preg_match('/Subject: (.*?)\s+(To)/i', $v, $subject) ){
+// 				// $tmp_s = base64_decode($subject[2]);
+// 				// $tmp_s = $subject[1]=='gbk'||$subject[1]=='gb2312'? iconv('gbk', 'utf-8', $tmp_s) : $tmp_s;
+// 				$tmp_s = $subject[1];
+// 			}
+// 			// 英文标题
+// 			else if(preg_match('/Subject: (.*?)\sTo/i', $v, $subject) ){
+// 				$tmp_s = $subject[1];
+// 			}
+// 			else{
+// 				$tmp_s = '邮件标题';
+// 			}
+// 			preg_match('/From:\s"=\?(.*?)\?="\s+<(.*?)>/i', $v, $from);
+// 			preg_match('/Date: (.*?)\s+(From)/i', $v, $date);
+// 			preg_match('/Content-Transfer-Encoding:\sbase64\s+(.*?)\s+(\s)/i', $v, $content);
+// 			$list[] = $tmp_s.'#'.$from[2].'#'.$date[1].'#'.$content[1];
+// 		}
+// 	}
+// 	return $list;
+// }
