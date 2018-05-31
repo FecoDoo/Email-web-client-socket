@@ -40,9 +40,6 @@ class Check extends Controller
     {
         $res = new Mail();
         $res->receive();
-        Db::connect();
-        $number_in = Db::table('inbox')->count('id');
-        Db::name('inbox_number')->where('status', 1)->update(['number_in' => $number_in]);
     }
 
 }

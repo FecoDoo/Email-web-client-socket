@@ -6,11 +6,7 @@ use think\Db;
 
 class Mail extends Controller
 {
-    public function sync()
-    {
-        $this->receive();
-        $this->success('Sync successful', '/inbox');
-    }
+
     public function send()
     {
         Db::connect();
@@ -39,6 +35,6 @@ class Mail extends Controller
         $access_code = Db::table('mailbox_info')->value('access_code');
         $imap_port = Db::table('mailbox_info')->value('imap_port');
         $data = receiveMail($host, $user, $access_code, $imap_port);
-        Db::table('inbox')->insert($data);
+        return;
     }
 }

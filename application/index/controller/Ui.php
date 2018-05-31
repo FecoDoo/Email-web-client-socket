@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Db;
+use app\index\controller\Mail;
 
 class ui extends Controller
 {
@@ -31,6 +32,8 @@ class ui extends Controller
     }
     public function inbox()
     {
+        $mail = new Mail;
+        $mail->receive();
         Db::connect();
         $count = Db::name('inbox')->count();
         $subject = Db::name('inbox')->column('subject');

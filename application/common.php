@@ -1,6 +1,7 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
+use think\Db;
 extension_loaded("imap");
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
@@ -74,7 +75,7 @@ function receiveMail($host, $user, $pwd, $port)
     $mailPass = $pwd; //邮箱密码
     $mbox = imap_open($mailLink, $mailUser, $mailPass); //开启信箱imap_open
     $totalrows = imap_num_msg($mbox); //取得信件数
-
+    Db::table('inbox_number')->where('status', 1)->update(['number_in' => $totalrows]);
     $data = array();
     for ($i = 1; $i <= $totalrows; $i++) {
         $headers = imap_fetchheader($mbox, $i); //获取信件标头
@@ -88,6 +89,10 @@ function receiveMail($host, $user, $pwd, $port)
             'subject' => $headlist[2],
             'content' => $mailBody,
         ];
+        if (empty(Db::table('inbox')->where('subject', $data['subject'])->find()))
+        {
+            Db::table('inbox')->insert($data);
+        }
     }
     imap_close($mbox);
     return $data;

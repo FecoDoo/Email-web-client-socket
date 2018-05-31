@@ -262,7 +262,7 @@
 				</h1>
 				<div style="margin-top: 10px;">
 					<div class="btn-group">
-						<form action="mail/sync" method="post" class="sync">
+						<form action="Sync/sync" method="post" class="sync">
 							<a href = '/inbox' class="btn btn-primary">Sync</a>
 						</form>
 					</div>
@@ -310,5 +310,25 @@
 <script src="static/ui/js/jquery.metisMenu.js"></script>
 <!-- Custom Js -->
 <script src="static/ui/js/custom-scripts.js"></script>
+<script type="text/javascript">
+        $(document).ready(function(){
+            $("#consume").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "/inbox",
+                    success: function(data){
+                      $("#a").html(
+                      	Subject: {$vo.subject}
+							<br>Date: {$vo.date}
+							<br>from: {$vo.from}<br><br>
+							<strong>Content: </strong><br>
+							<small>{$vo.content}</small>);
+                    error: function(jqXHR){
+                      
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
